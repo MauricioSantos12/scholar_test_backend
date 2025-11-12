@@ -8,7 +8,13 @@ class TestResultModel extends BaseModel {
   async startTest(testId, userId) {
     const start_time = new Date();
     const [id] = await knex("test_results")
-      .insert({ test_id: testId, user_id: userId, start_time, score: 0 })
+      .insert({
+        test_id: testId,
+        user_id: userId,
+        start_time,
+        score: 0,
+        status: "in_progress",
+      })
       .returning("*");
     const data = await knex("test_results").where({ id }).first();
     return data;
