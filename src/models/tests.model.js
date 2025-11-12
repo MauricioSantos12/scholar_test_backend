@@ -60,14 +60,10 @@ class TestModel extends BaseModel {
     );
 
     // Información base del test
-    const test = await knex("tests")
-      .where("id", testId)
-      .select("id", "name", "description")
-      .first();
+    const test = await knex("tests").where("id", testId).select("*").first();
 
     return { ...test, areas: areasWithData, testType };
   }
-
   async getTestAreas(testId) {
     const areas = await knex("test_areas as ta")
       .join("areas as a", "ta.area_id", "a.id")

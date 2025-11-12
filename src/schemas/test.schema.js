@@ -4,6 +4,7 @@ export const testSchema = z.object({
   name: z.string().min(2),
   description: z.string().optional(),
   type_id: z.number().int().optional(),
+  max_time_minutes: z.number().int().optional(),
 });
 
 export const testUpdateSchema = testSchema.partial();

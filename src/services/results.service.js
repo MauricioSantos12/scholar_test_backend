@@ -9,7 +9,12 @@ class ResultsService extends BaseService {
     super(testResultModel);
   }
 
-  async createFullResult({ test_id, user_id, answers }) {
+  async createFullResult({
+    test_id,
+    user_id,
+    test_result_id: testResultId,
+    answers,
+  }) {
     // Obtener preguntas y verificar respuestas
     const questionIds = answers.map((a) => a.question_id);
     const questions = await knex("questions")
@@ -64,13 +69,17 @@ class ResultsService extends BaseService {
     );
     const totalScore = ((totalCorrect / totalQuestions) * 100).toFixed(2);
     // Guardar test_result
-    const [testResultId] = await knex("test_results").insert({
-      test_id,
-      user_id,
-      score: totalScore,
-      correct_answers: totalCorrect,
-      incorrect_answers: totalQuestions - totalCorrect,
-    });
+    await knex("test_results")
+      .where({
+        id: testResultId,
+      })
+      .update({
+        test_id,
+        user_id,
+        score: totalScore,
+        correct_answers: totalCorrect,
+        incorrect_answers: totalQuestions - totalCorrect,
+      });
 
     // Guardar area_results
     for (const [areaId, data] of Object.entries(resultsByArea)) {
