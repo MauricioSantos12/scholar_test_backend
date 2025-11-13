@@ -8,9 +8,9 @@ const router = express.Router();
 router.post("/", verifyToken, resultsController.createFullResult);
 
 // Obtener todos los resultados
-router.get("/", verifyToken, resultsController.getAll);
+router.get("/", verifyToken, resultsController.getAllResults);
 
 // Obtener resultado por ID
-router.get("/:id", verifyToken, resultsController.getById);
+router.get("/:id", verifyToken, resultsController.getByFullResultId);
 
 export default router;

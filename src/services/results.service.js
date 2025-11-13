@@ -120,6 +120,73 @@ class ResultsService extends BaseService {
       resultsByComponent,
     };
   }
+
+  async getByFullResultId(testResultId) {
+    const testResult = await testResultModel.findById(testResultId);
+    console.log({ testResult });
+    const areasByTestResult = await knex("area_results").where({
+      test_result_id: testResultId,
+    });
+    const resultsByArea = areasByTestResult.reduce((obj, area) => {
+      obj[area.area_id] = {
+        correct: area.correct_answers,
+        score: area.score,
+        total: area.correct_answers + area.incorrect_answers,
+        result_area_id: area.id,
+      };
+      return obj;
+    }, {});
+    const idsResultArea = [];
+    for (const [areaId, data] of Object.entries(resultsByArea)) {
+      idsResultArea.push(data.result_area_id);
+    }
+
+    const componentsByTestResult = await Promise.all(
+      idsResultArea.map(async (areaResultId) => {
+        const components = await knex("component_results").where({
+          area_result_id: areaResultId,
+        });
+        return components;
+      })
+    );
+    componentsByTestResult.map((components) => {
+      components.reduce((obj, component) => {
+        obj[component.component_id] = {
+          correct: component.correct_answers,
+          score: component.score,
+          total: component.correct_answers + component.incorrect_answers,
+        };
+        return obj;
+      }, {});
+    });
+    const resultsByComponent = {};
+    const resultByAreaIds = Object.keys(resultsByArea);
+    componentsByTestResult.map((components, i) => {
+      components.map((component) => {
+        const areaId = resultByAreaIds[i];
+        resultsByComponent[component.component_id] = {
+          correct: component.correct_answers,
+          total: component.correct_answers + component.incorrect_answers,
+          area_id: areaId,
+          score: component.score,
+        };
+      });
+    });
+    return {
+      testResultId,
+      totalScore: testResult.score,
+      totalQuestions: testResult.correct_answers + testResult.incorrect_answers,
+      totalCorrect: testResult.correct_answers,
+      totalIncorrect: testResult.incorrect_answers,
+      resultsByArea,
+      resultsByComponent,
+      test_id: testResult.test_id,
+    };
+  }
+
+  async getAllResults(page, pageSize, filters) {
+    return await testResultModel.getAllResults({ page, pageSize, filters });
+  }
 }
 
 export default new ResultsService();
