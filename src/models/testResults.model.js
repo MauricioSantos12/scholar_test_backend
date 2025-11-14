@@ -32,42 +32,21 @@ class TestResultModel extends BaseModel {
   }
 
   async getAllResults({ page = 1, pageSize = 10, filters = {} }) {
-    const totalCount = await knex("test_results").count("*").first();
     const query = knex("test_results").select("*");
     if (Object.keys(filters).length > 0) {
       Object.keys(filters).forEach((key) => {
         query.where(key, filters[key]);
       });
     }
+    const totalData = await query;
+    const totalRows = totalData.length;
     const data = await query.offset((page - 1) * pageSize).limit(pageSize);
+
     return {
       data,
-      totalPages: Math.ceil(totalCount["count(*)"] / pageSize),
+      totalPages: Math.ceil(totalRows / pageSize),
     };
   }
-
-  // const query = knex("test_results as tr")
-  //   .select(
-  //     "tr.*",
-  //     knex.raw(`
-  //       JSON_OBJECT(
-  //         'id', u.id,
-  //         'name', u.name,
-  //         'email', u.email
-  //       ) as userInfo
-  //     `),
-
-  //     knex.raw(`
-  //       JSON_OBJECT(
-  //         'id', t.id,
-  //         'name', t.name,
-  //         'description', t.description
-  //         /* Add any other columns from the 'tests' table here */
-  //       ) as testInfo
-  //     `)
-  //   )
-  //   .join("users as u", "tr.user_id", "u.id")
-  //   .join("tests as t", "tr.test_id", "t.id");
 }
 
 export default new TestResultModel();
