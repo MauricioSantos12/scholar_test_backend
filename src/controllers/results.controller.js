@@ -32,7 +32,19 @@ class ResultsController extends BaseController {
       if (filters.page) delete filters.page;
       if (filters.pageSize) delete filters.pageSize;
 
-      const data = await resultsService.getAllResults(page, pageSize, filters);
+      const startDate = filters.startDate ? new Date(filters.startDate) : null;
+      const endDate = filters.endDate ? new Date(filters.endDate) : null;
+
+      if (filters.startDate) delete filters.startDate;
+      if (filters.endDate) delete filters.endDate;
+
+      const data = await resultsService.getAllResults(
+        page,
+        pageSize,
+        startDate,
+        endDate,
+        filters
+      );
       res.json(data);
     } catch (error) {
       next(error);

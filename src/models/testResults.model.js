@@ -31,13 +31,21 @@ class TestResultModel extends BaseModel {
       .update({ status, end_time: endTime });
   }
 
-  async getAllResults({ page = 1, pageSize = 10, filters = {} }) {
+  async getAllResults({
+    page = 1,
+    pageSize = 10,
+    startDate,
+    endDate,
+    filters = {},
+  }) {
     const query = knex("test_results").select("*");
     if (Object.keys(filters).length > 0) {
       Object.keys(filters).forEach((key) => {
         query.where(key, filters[key]);
       });
     }
+    if (startDate) query.where("created_at", ">=", startDate);
+    if (endDate) query.where("created_at", "<=", endDate);
     const totalData = await query;
     const totalRows = totalData.length;
     const data = await query.offset((page - 1) * pageSize).limit(pageSize);

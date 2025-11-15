@@ -123,7 +123,6 @@ class ResultsService extends BaseService {
 
   async getByFullResultId(testResultId) {
     const testResult = await testResultModel.findById(testResultId);
-    console.log({ testResult });
     const areasByTestResult = await knex("area_results").where({
       test_result_id: testResultId,
     });
@@ -184,8 +183,14 @@ class ResultsService extends BaseService {
     };
   }
 
-  async getAllResults(page, pageSize, filters) {
-    return await testResultModel.getAllResults({ page, pageSize, filters });
+  async getAllResults(page, pageSize, startDate, endDate, filters) {
+    return await testResultModel.getAllResults({
+      page,
+      pageSize,
+      startDate,
+      endDate,
+      filters,
+    });
   }
 }
 
