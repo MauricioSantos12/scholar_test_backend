@@ -25,6 +25,21 @@ class UserController extends BaseController {
       next(error);
     }
   }
+  async updateUser(req, res, next) {
+    try {
+      const { password, ...user } = req.body;
+      let hashedPassword;
+      if (password) {
+        hashedPassword = await bcrypt.hash(password, 10);
+        user.password = hashedPassword;
+      }
+      const updatedUser = await userService.updateUser(req.params.id, user);
+      res.status(201).json(updatedUser);
+    } catch (error) {
+      console.log({ error });
+      next(error);
+    }
+  }
 }
 
 export default new UserController();

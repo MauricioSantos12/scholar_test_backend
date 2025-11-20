@@ -6,3 +6,7 @@ export const testAreaSchema = z.object({
   is_active: z.boolean().optional(),
   position: z.number().int().optional(),
 });
+
+export const testUpdateSomeAreas = z.object({
+  areas: z.array(testAreaSchema),
+});

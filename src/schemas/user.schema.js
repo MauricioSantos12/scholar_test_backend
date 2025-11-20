@@ -11,11 +11,12 @@ export const userSchema = z.object({
   graduation_year: z.number().int().optional(),
   city: z.string().optional(),
   phone_number: z.string().optional(),
-  parent_name: z.string().optional(),
-  parent_email: z.string().email().optional(),
-  parent_phone: z.string().optional(),
+  parent_name: z.string().optional().nullable(),
+  parent_email: z.string().email().optional().nullable(),
+  parent_phone: z.string().optional().nullable(),
   role: z.enum(["admin", "student"]),
   is_active: z.boolean().optional(),
+  password: z.string().optional().nullable(),
 });
 
 export const userUpdateSchema = userSchema.partial();

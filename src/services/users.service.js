@@ -6,7 +6,10 @@ class UserService extends BaseService {
     super(userModel);
   }
   async createUser(user) {
-    return await this.model.createUser(user);
+    return await userModel.createUser(user);
+  }
+  async updateUser(id, user) {
+    return await userModel.updateUser(id, user);
   }
 }
 

@@ -1,6 +1,18 @@
 import knex from "../db/knex.js";
 
 export const TestAreaModel = {
+  getAll: async () => {
+    const areas = await knex("test_areas").select("*");
+    return areas;
+  },
+  getAreasByTestId: async (testId) => {
+    const areas = await knex("test_areas as ta")
+      .join("areas as a", "ta.area_id", "=", "a.id")
+      .where({ test_id: testId })
+      .select("*");
+    return areas;
+  },
+
   getAreasByAreaId: async (areaId) => {
     const areas = await knex("test_areas")
       .join("tests", "test_areas.test_id", "=", "tests.id")

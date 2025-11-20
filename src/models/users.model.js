@@ -15,6 +15,10 @@ class UserModel extends BaseModel {
     const { password, ...safeUser } = user;
     return { id, ...safeUser };
   }
+  async updateUser(id, user) {
+    await knex("users").where({ id }).update(user);
+    return await this.findById(id);
+  }
 }
 
 export default new UserModel();

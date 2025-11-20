@@ -17,7 +17,7 @@ router.put(
   "/:id",
   verifyToken,
   validateSchema(userUpdateSchema),
-  userController.update
+  userController.updateUser
 );
 router.delete("/:id", verifyToken, userController.delete);
 export default router;
