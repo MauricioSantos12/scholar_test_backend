@@ -10,7 +10,7 @@ export async function seed(knex) {
     .where({ email: "admin@example.com" })
     .first();
   const student1Exist = await knex("users")
-    .where({ email: "camila.leyva@example.com" })
+    .where({ email: "student@example.com" })
     .first();
   const student2Exist = await knex("users")
     .where({ email: "mauricio.santos@example.com" })
@@ -43,19 +43,19 @@ export async function seed(knex) {
   if (!student1Exist) {
     await knex("users").insert([
       {
-        identification_number: "200000001",
-        name: "Camila",
+        identification_number: "123456789",
+        name: "Student",
         second_name: "",
         last_name: "Leyva",
-        email: "camila.leyva@example.com",
+        email: "student@example.com",
         password: hashedStudent,
         date_birth: "2005-06-15",
         school_name: "Liceo Nacional",
         graduation_year: 2017,
         city: "Ibagué",
         phone_number: "311112222333",
-        parent_name: "Diana Escalante",
-        parent_email: "diana@example.com",
+        parent_name: "Padre",
+        parent_email: "padre@example.com",
         parent_phone: "311112222333",
         role: "student",
         created_at: new Date(),
