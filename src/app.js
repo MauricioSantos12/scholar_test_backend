@@ -11,6 +11,8 @@ import authRoutes from "./routes/auth.route.js";
 import testAreaRoutes from "./routes/testAreas.route.js";
 import testTypesRoute from "./routes/testTypes.route.js";
 import resultsRoute from "./routes/results.route.js";
+import groupsRoute from "./routes/groups.route.js";
+
 import { errorHandler } from "./middlewares/errorHandler.js";
 
 const app = express();
@@ -32,6 +34,7 @@ app.use("/api/answers", answersRoute);
 app.use("/api/recommendations", recommendationsRoute);
 app.use("/api/users", usersRoute);
 app.use("/api/results", resultsRoute);
+app.use("/api/groups", groupsRoute);
 
 // Middleware global de errores
 app.use(errorHandler);

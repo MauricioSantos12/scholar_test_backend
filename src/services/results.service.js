@@ -1,7 +1,5 @@
 import BaseService from "./base.service.js";
 import testResultModel from "../models/testResults.model.js";
-import areaResultModel from "../models/areaResults.model.js";
-import componentResultModel from "../models/componentResults.model.js";
 import knex from "../db/knex.js";
 
 class ResultsService extends BaseService {
