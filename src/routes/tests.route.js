@@ -10,6 +10,7 @@ const router = express.Router();
 router.get("/", testController.getAll);
 router.get("/:id/full", verifyToken, testController.getFullTestById);
 router.get("/:id/areas", verifyToken, testController.getTestAreas);
+router.get("/availableByUser/:userId", testController.getAvailableTests);
 router.post(
   "/",
   verifyToken,

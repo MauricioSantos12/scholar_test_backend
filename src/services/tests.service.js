@@ -8,8 +8,12 @@ class TestService extends BaseService {
   getFullTestById(id) {
     return testModel.getFullTestById(id);
   }
+
   getTestAreas(id) {
     return testModel.getTestAreas(id);
+  }
+  getAvailableTests(userId) {
+    return testModel.getAvailableTests(userId);
   }
 }
 
